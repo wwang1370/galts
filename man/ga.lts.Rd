@@ -50,6 +50,8 @@ A boolean variable for printing the current status of algorithms to screen. Defa
 }
 \references{
 Rousseeuw, P. J., van Driessen, K. (2006). Computing LTS Regression for Large Data Sets ,Data Mining and Knowledge Discovery, 12, 29-45.
+
+Satman, M.,H. (2012). A Genetic Algorithm Based Modification on the LTS Algorithm for Large Data Sets, Communications in Statistics - Simulation and Computation, Vol 41, Issue 5, pp. 644-652.
 }
 \author{
 Mehmet Hakan Satman
