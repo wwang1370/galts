@@ -9,3 +9,7 @@ import(
   genalg,
   DEoptim
 )
+
+ importFrom("stats", "lm", "mahalanobis", "median", "model.frame",
+     "model.matrix")
+

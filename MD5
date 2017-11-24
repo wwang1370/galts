@@ -1,8 +1,8 @@
-171f19ef72e5a0f52f9ffbfebebfe231 *DESCRIPTION
-573a7b81062a29552537a1fb5440c6c9 *NAMESPACE
-2667ad97033234890a1ec963afdf55d1 *R/galts.r
-6fb4c87d033cc06ec11842e45d3a26a2 *R/medmad.r
-1c3a6dbeda37dffefeb76d713dffb5ca *man/ga.lts.Rd
-dba6154b4335860e8bb996ca9394c9dc *man/galts-package.Rd
-a2f9c90a237bc3851d6c3aca8b2b43f0 *man/medmad.Rd
-7bbd2a36daa1242dd63df351d09dff1d *man/medmad.cov.Rd
+37e72d0ea3dbe94a342f87df9fce1ca4 *DESCRIPTION
+3f13539883951a0ee922b74589357983 *NAMESPACE
+ea004e0dd0771d4aa0cf2a48df9b3b36 *R/galts.r
+7f4c0767716458a31e1f44033b2acf7d *R/medmad.r
+26d183e2fddb065f025a9fa925f2a174 *man/ga.lts.Rd
+9796065c23c8700cfe98b4299cd2ee04 *man/galts-package.Rd
+2578d5a71e20f517a4cef7688744b245 *man/medmad.Rd
+7c681fb0262e44b7e7430b38754be2e5 *man/medmad.cov.Rd

@@ -11,7 +11,8 @@ evolution) to construct a basic subset and iterates C-steps as defined in Rousse
 estimations have lower mean square errors, as a result of lower biases and lower variances. 
 }
 \usage{
-ga.lts(formula, h = NULL, iters = 2, popsize = 50, lower, upper, csteps = 2, method = "ga", verbose = FALSE)
+ga.lts(formula, h = NULL, iters = 2, popsize = 50, lower, upper, 
+		csteps = 2, method = "ga", verbose = FALSE)
 }
 \arguments{
   \item{formula}{
@@ -59,24 +60,27 @@ Mehmet Hakan Satman
 
 
 \examples{
-#Data generating process
-x1<-rnorm(100)
-x2<-rnorm(100)
-e<-rnorm(100)
-#Setting betas to 5
-y<-5+5*x1+5*x2+e
-#Contaminate the data on the dimension of X's randomly
-#This is the maximum contamination rate that the LTS can cope with.
-outlyings<-sample(1:100,48)
-x1[outlyings]<-10
-x2[outlyings]<-10
-#Estimating LTS with ga (Default optimization method)
-lts<-ga.lts(y~x1+x2, popsize=40, iters=2, lower=-20, upper=20)
+# Data generating process
+x1 <- rnorm(100)
+x2 <- rnorm(100)
+e <- rnorm(100)
+
+# Setting betas to 5
+y <- 5 + 5 * x1 + 5 * x2 + e
+
+# Contaminate the data on the dimension of X's randomly
+# This is the maximum contamination rate that the LTS can cope with.
+outlyings <- sample(1:100, 48)
+x1[outlyings] <- 10
+x2[outlyings] <- 10
+
+# Estimating LTS with ga (Default optimization method)
+lts <- ga.lts(y ~ x1 + x2, popsize = 40, iters = 2, lower = -20, upper = 20)
 print(lts)
 
 
-#Estimating LTS with differential evolution
-lts<-ga.lts(y~x1+x2, popsize=40, iters=2, lower=-20, upper=20, method="de")
+# Estimating LTS with differential evolution
+lts <- ga.lts(y ~ x1 + x2, popsize = 40, iters = 2, lower = -20, upper = 20, method = "de")
 print(lts)
 }
 
