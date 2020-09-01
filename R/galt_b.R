@@ -2,12 +2,12 @@ require("genalg")
 require("DEoptim")
 
 
-ga.lts <- function(formula, h=NULL, iters=2, popsize=50, lower, upper, 
+ga.ltsb <- function(formula, slp, h=NULL, iters=2, popsize=50, lower, upper, 
 					csteps=2, method="ga", verbose=FALSE){
-    x <- model.matrix(formula)
+    X <- model.matrix(x)
     y <- model.frame(formula)[,1]
     n <- length(y)
-    p <- dim(x)[2]
+    p <- dim(X)[2]
     ind <- rep(0,n)
     if(is.null(h)){
         h <- floor(n/2) + floor((p + 1) / 2)
@@ -19,22 +19,26 @@ ga.lts <- function(formula, h=NULL, iters=2, popsize=50, lower, upper,
 
    cstep <- function(candidates, csteps){
         cmybetas <- candidates
-        indices <- order(abs(y - x %*% cmybetas)/sqrt(1+cmybetas^2))[1:p]
+        indices <- order(abs((y - X%*% cmybetas)/sqrt(slp^2+1)))[1:p]
+         
+         
         for (i in 1:csteps){
-       
             # ols <- lm(y[indices] ~ x[indices,] - 1)
-            mybetas <- 	tls::tls(y~x-1,data=data.frame(y=y[indices],x=x[indices,]))$coefficient
-            res <- (y - x %*% mybetas)/sqrt(1+mybetas^2)
+            # mybetas <- ols$coefficients
+         
+            beta0 <- mean(y[indices])-slp*mean(x[indices])
+            res <- (y - x*slp-beta0)/sqrt(1+slp^2)
             res2 <- abs(res)
             o <- order(res2)
             indices <- sort(o[1:h])
+            mybetas <- c(beta0,slp)
         }
         return(mybetas)
     }
 
     cost <- function(candidates){
         newbetas <- cstep(candidates, csteps)
-        res <- (y - x %*% newbetas)/sqrt(1+mybetas^2)
+        res <- (y - X %*% newbetas)/sqrt(1+slp^2)
         fitn <- sum(sort(res^2)[1:h])
         return(fitn)
     }
@@ -50,7 +54,7 @@ ga.lts <- function(formula, h=NULL, iters=2, popsize=50, lower, upper,
         best <- de$optim$bestmem       
 	 }
 	newbetas <- cstep(best, 10)
-    res <- (y - x %*% newbetas)/sqrt(1+mybetas^2)
+    res <- (y - X %*% newbetas)/sqrt(1+slp^2)
     crit <- sum(sort(res^2)[1:h])
     result <- list(coefficients = as.double(newbetas), crit = crit, method = method)
     return(result)
