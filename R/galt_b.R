@@ -4,7 +4,7 @@ require("DEoptim")
 
 ga.ltsb <- function(formula, slp, h=NULL, iters=2, popsize=50, lower, upper, 
 					csteps=2, method="ga", verbose=FALSE){
-    X <- model.matrix(x)
+    X <- model.matrix(formula)
     y <- model.frame(formula)[,1]
     n <- length(y)
     p <- dim(X)[2]

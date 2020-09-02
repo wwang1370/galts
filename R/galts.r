@@ -23,7 +23,8 @@ ga.lts <- function(formula, h=NULL, iters=2, popsize=50, lower, upper,
         for (i in 1:csteps){
        
             # ols <- lm(y[indices] ~ x[indices,] - 1)
-            mybetas <- 	tls::tls(y~x-1,data=data.frame(y=y[indices],x=x[indices,]))$coefficient
+            mytls <- tls::tls(y~x-1,data=data.frame(y=y[indices],x=x[indices,]))
+            mybetas <- mytls$coefficient
             res <- (y - x %*% mybetas)/sqrt(1+mybetas^2)
             res2 <- abs(res)
             o <- order(res2)
@@ -34,7 +35,7 @@ ga.lts <- function(formula, h=NULL, iters=2, popsize=50, lower, upper,
 
     cost <- function(candidates){
         newbetas <- cstep(candidates, csteps)
-        res <- (y - x %*% newbetas)/sqrt(1+mybetas^2)
+        res <- (y - x %*% newbetas)/sqrt(1+newbetas^2)
         fitn <- sum(sort(res^2)[1:h])
         return(fitn)
     }
@@ -50,7 +51,7 @@ ga.lts <- function(formula, h=NULL, iters=2, popsize=50, lower, upper,
         best <- de$optim$bestmem       
 	 }
 	newbetas <- cstep(best, 10)
-    res <- (y - x %*% newbetas)/sqrt(1+mybetas^2)
+    res <- (y - x %*% newbetas)/sqrt(1+newbetas^2)
     crit <- sum(sort(res^2)[1:h])
     result <- list(coefficients = as.double(newbetas), crit = crit, method = method)
     return(result)
