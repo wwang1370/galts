@@ -2,7 +2,7 @@ require("genalg")
 require("DEoptim")
 
 
-ga.lts <- function(formula, h=NULL, iters=2, popsize=50, lower, upper, 
+ga.tlts<- function(formula, h=NULL, iters=2, popsize=50, lower, upper, 
 					csteps=2, method="ga", verbose=FALSE){
     x <- model.matrix(formula)
     y <- model.frame(formula)[,1]
@@ -19,11 +19,13 @@ ga.lts <- function(formula, h=NULL, iters=2, popsize=50, lower, upper,
 
    cstep <- function(candidates, csteps){
         cmybetas <- candidates
-        indices <- order(abs(y - x %*% cmybetas))[1:p]
+        indices <- order(abs(y - x %*% cmybetas)/sqrt(1+cmybetas^2))[1:p]
         for (i in 1:csteps){
-            ols <- lm(y[indices] ~ x[indices,] - 1)
-            mybetas <- ols$coefficients
-            res <- y - x %*% mybetas
+       
+            # ols <- lm(y[indices] ~ x[indices,] - 1)
+            mytls <- tls::tls(y~x-1,data=data.frame(y=y[indices],x=x[indices,]))
+            mybetas <- mytls$coefficient
+            res <- (y - x %*% mybetas)/sqrt(1+mybetas^2)
             res2 <- abs(res)
             o <- order(res2)
             indices <- sort(o[1:h])
@@ -33,7 +35,7 @@ ga.lts <- function(formula, h=NULL, iters=2, popsize=50, lower, upper,
 
     cost <- function(candidates){
         newbetas <- cstep(candidates, csteps)
-        res <- y - x %*% newbetas
+        res <- (y - x %*% newbetas)/sqrt(1+newbetas^2)
         fitn <- sum(sort(res^2)[1:h])
         return(fitn)
     }
@@ -49,7 +51,7 @@ ga.lts <- function(formula, h=NULL, iters=2, popsize=50, lower, upper,
         best <- de$optim$bestmem       
 	 }
 	newbetas <- cstep(best, 10)
-    res <- y - x %*% newbetas
+    res <- (y - x %*% newbetas)/sqrt(1+newbetas^2)
     crit <- sum(sort(res^2)[1:h])
     result <- list(coefficients = as.double(newbetas), crit = crit, method = method)
     return(result)
